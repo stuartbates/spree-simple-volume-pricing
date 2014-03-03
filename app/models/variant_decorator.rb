@@ -1,4 +1,4 @@
-Variant.class_eval do
+Spree::Variant.class_eval do
   has_many :volume_prices,
     :order => :starting_quantity,
     :dependent => :destroy,
@@ -30,11 +30,7 @@ Variant.class_eval do
   end
 
   def total_volume_cost starting_quantity, quantity
-    if progressive_volume_discount
-      progressive_total_cost starting_quantity, quantity
-    else
-      uniform_total_cost starting_quantity, quantity
-    end
+    batched_total_cost starting_quantity, quantity
   end
 
   def blank_volume_price attributes
@@ -85,4 +81,15 @@ Variant.class_eval do
 
     total_cost
   end
-end unless Variant.instance_methods.include? :volume_prices_source
+
+  def batched_total_cost starting_quantity, quantity
+    final_price = default_price = self.price
+    if volume_prices.any?
+      vp = volume_prices.first
+      (floor( quantity / vp.starting_quantity ) * vp.price ) + ( default_price * ( quantity % vp.starting_quantity ) )
+    else
+      quantity * default_price
+    end
+  end
+
+end unless Spree::Variant.instance_methods.include? :volume_prices_source

@@ -1,4 +1,4 @@
-Order.class_eval do
+Spree::Order.class_eval do
   def volume_discount
     line_items.map(&:volume_discount).sum
   end
@@ -73,4 +73,4 @@ Order.class_eval do
       i.update_attributes_without_callbacks :volume_discount => 0.0
     end
   end
-end unless Order.instance_methods.include? :update_totals_on_user_association
+end unless Spree::Order.instance_methods.include? :update_totals_on_user_association

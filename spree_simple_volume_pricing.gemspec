@@ -17,5 +17,5 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.8.7'
 
   s.add_dependency('spree_core', '>= 0.40.3')
-  s.add_dependency('render_inheritable', '>= 1.0.0')
+  #s.add_dependency('render_inheritable', '>= 1.0.0')
 end

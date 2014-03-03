@@ -1,4 +1,4 @@
-require "render_inheritable"
-Admin::BaseController.class_eval do
-  render_inheritable
-end unless Admin::BaseController.included_modules.include? RenderInheritable
+#require "render_inheritable"
+#Spree::Admin::ResourceController.class_eval do
+#  render_inheritable
+#end unless Spree::Admin::ResourceController.included_modules.include? RenderInheritable

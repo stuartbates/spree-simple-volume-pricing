@@ -1,4 +1,4 @@
-LineItem.class_eval do
+Spree::LineItem.class_eval do
   def update_volume_discount updated_order = nil
     self.volume_discount = 0
     self.order = updated_order if updated_order
@@ -38,4 +38,4 @@ LineItem.class_eval do
   def check_update_volume_discount
     update_volume_discount if price_changed? || quantity_changed?
   end
-end unless LineItem.instance_methods.include? :amount_with_volume_discount
+end unless Spree::LineItem.instance_methods.include? :amount_with_volume_discount

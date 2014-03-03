@@ -1,4 +1,4 @@
-Product.class_eval do
+Spree::Product.class_eval do
   delegate_belongs_to :master,
     :volume_prices_attributes=,
     :progressive_volume_discount
@@ -27,4 +27,4 @@ Product.class_eval do
       VolumePrice.new vp.attributes.slice('starting_quantity', 'price')
     end
   end
-end unless Product.instance_methods.include? :all_variant_ids
+end unless Spree::Product.instance_methods.include? :all_variant_ids
