@@ -1,14 +1,23 @@
 Spree::Variant.class_eval do
+
+  # Relations
   has_many :volume_prices,
     :order => :starting_quantity,
     :dependent => :destroy,
     :inverse_of => :variant
+
+  # Attributes
   accepts_nested_attributes_for :volume_prices,
     :reject_if => :blank_volume_price,
     :allow_destroy => true
 
+  # Attributes
+  attr_accessible :volume_prices_attributes
+
+  # Hooks
   after_create :copy_master_volume_prices
 
+  # Instance methods
   def volume_prices_source
     if !is_master && product.variants_use_master_discount
       product.master
@@ -34,13 +43,13 @@ Spree::Variant.class_eval do
   end
 
   def blank_volume_price attributes
-    attributes['starting_quantity'].blank? && attributes['price'].blank?
+    attributes['price'].blank?
   end
 
-  private
+private
+
   def copy_master_volume_prices
-    return if self.is_master?
-    self.progressive_volume_discount = self.product.master.progressive_volume_discount
+    return unless product.master.present?
     self.volume_prices = self.product.master.volume_prices.map do |vp|
       VolumePrice.new vp.attributes.slice('starting_quantity', 'price')
     end
@@ -86,7 +95,7 @@ Spree::Variant.class_eval do
     final_price = default_price = self.price
     if volume_prices.any?
       vp = volume_prices.first
-      (floor( quantity / vp.starting_quantity ) * vp.price ) + ( default_price * ( quantity % vp.starting_quantity ) )
+      ((quantity / vp.starting_quantity).floor * vp.price) + (default_price * (quantity % vp.starting_quantity))
     else
       quantity * default_price
     end

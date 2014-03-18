@@ -1,6 +1,8 @@
 Spree::Order.class_eval do
+
   def volume_discount
-    line_items.map(&:volume_discount).sum
+    total = line_items.map(&:volume_discount).sum
+    Spree::Money.new(total, { currency: currency }).to_html
   end
 
   def products_line_items product

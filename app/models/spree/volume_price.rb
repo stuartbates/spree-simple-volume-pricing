@@ -5,6 +5,7 @@ module Spree
 
     validates :variant,
       :presence => true
+
     validates :starting_quantity,
       :presence => true,
       :uniqueness => {:scope => :variant_id},
