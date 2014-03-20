@@ -10,7 +10,7 @@ Spree::Order.class_eval do
   end
 
   def line_items_dirty?
-    @line_items && @line_items.any? {|i| !i.destroyed? && i.changed?}
+    line_items && line_items.any? {|i| !i.destroyed? && i.changed?}
   end
 
   # By default volume price is calculated based only on quantity of the current
